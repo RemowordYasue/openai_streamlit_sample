@@ -8,7 +8,7 @@ openai.api_key = st.secrets.OpenAIAPI.openai_api_key
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
+        {"role": "system", "content": st.secrets.OpenAIAPI.system_prompt}
         ]
 
 # チャットボットとやりとりする関数
@@ -20,7 +20,8 @@ def communicate():
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        temperature=st.secrets.OpenAIAPI.temperature
     )
 
     bot_message = response["choices"][0]["message"]
